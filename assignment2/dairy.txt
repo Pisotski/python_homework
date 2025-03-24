@@ -1,5 +1,3 @@
-hi
-done for now
-chat 2
-all good
-done for now
+"Having fun with python"
+"All good"
+"done for now"

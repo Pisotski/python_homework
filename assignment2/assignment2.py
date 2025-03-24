@@ -16,7 +16,7 @@ print(path)
 def writeToDairy(output):
     with open(path, "a", newline="") as dairy:
         try:
-            writer = csv.writer(dairy)
+            writer = csv.writer(dairy, dialect="unix")
             writer.writerow([output])
         except Exception as e:
             trace_back = traceback.extract_tb(e.__traceback__)
