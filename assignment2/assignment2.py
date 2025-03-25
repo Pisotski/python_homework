@@ -2,6 +2,7 @@ import csv
 import os
 import traceback
 import custom_module
+from datetime import datetime
 
 
 def read_employees():
@@ -106,10 +107,11 @@ print(custom_module.secret)
 def create_minutes_dictionary(path):
     dictionary = {}
     try:
-        with open(path, "r", newline="") as m1:
-            data = csv.reader(m1)
+        with open(path, "r", newline="") as csvfile:
+            data = csv.reader(csvfile)
             dictionary["fields"] = next(data)
             dictionary["rows"] = [tuple(row) for row in (data)]
+            return dictionary
     except Exception as e:
         trace_back = traceback.extract_tb(e.__traceback__)
         stack_trace = list()
@@ -122,10 +124,68 @@ def create_minutes_dictionary(path):
         if message:
             print(f"Exception message: {message}")
         print(f"Stack trace: {stack_trace}")
-    return dictionary
 
 
 def read_minutes():
     v1 = create_minutes_dictionary("../csv/minutes1.csv")
     v2 = create_minutes_dictionary("../csv/minutes2.csv")
     return v1, v2
+
+
+minutes1, minutes2 = read_minutes()
+
+# print(minutes1, minutes2)
+
+
+def create_minutes_set():
+    set1 = set(minutes1["rows"])
+    set2 = set(minutes2["rows"])
+    return set1.union(set2)
+
+
+minutes_set = create_minutes_set()
+
+
+def write_output(data):
+    with open("minutes4.txt", "w", newline="") as m3:
+        writer = csv.writer(m3)
+        writer.writerows(data)
+
+
+def create_minutes_list():
+    minutes_list = [list(tuple) for tuple in minutes_set]
+    minutes = list(
+        map(lambda x: (x[0], datetime.strptime(x[1], "%B %d, %Y")), minutes_list)
+    )
+    return minutes
+
+
+# write_output(create_minutes_list())
+minutes_list = create_minutes_list()
+
+
+def write_sorted_list():
+    minutes_list.sort(key=lambda x: x[1])
+    converted_list = list(
+        map(lambda x: (x[0], datetime.strftime(x[1], "%B %d, %Y")), minutes_list)
+    )
+    print(converted_list)
+    # minutes.insert(0, minutes1["fields"])
+    try:
+        with open("./minutes.csv", "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(minutes1["fields"])
+            writer.writerows(converted_list)
+        return converted_list
+    except Exception as e:
+        trace_back = traceback.extract_tb(e.__traceback__)
+        stack_trace = list()
+        for trace in trace_back:
+            stack_trace.append(
+                f"File : {trace[0]} , Line : {trace[1]}, Func.Name : {trace[2]}, Message : {trace[3]}"
+            )
+        print(f"Exception type: {type(e).__name__}")
+        message = str(e)
+        if message:
+            print(f"Exception message: {message}")
+        print(f"Stack trace: {stack_trace}")
