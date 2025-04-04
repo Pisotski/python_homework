@@ -57,3 +57,17 @@ titanic.dtypes
 # Embarked        object
 # dtype: object
 titanic.to_excel("./titanic.xlsx", sheet_name="passengers", index=False)
+titanic["Age"].mean()
+titanic[["Age", "Fare"]].median()
+# print(titanic[["Age", "Fare"]].describe())
+
+titanic_summary_age_fare = titanic.agg(
+    {"Age": ["min", "max", "median", "skew"], "Fare": ["min", "max", "median", "mean"]}
+)
+
+titanic_grouped_sex_age = titanic[["Sex", "Age"]].groupby("Sex").mean()
+titanic.groupby("Sex").mean(numeric_only=True)
+titanic_grouped_sex_age_i = titanic.groupby("Sex")["Age"].mean()
+
+print(titanic_grouped_sex_age)
+print(titanic_grouped_sex_age_i)
