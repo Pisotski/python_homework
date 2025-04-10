@@ -45,12 +45,12 @@ print(
 #     "scatter",
 # ]
 
-# air_quality.plot.box()
+air_quality.plot.box()
 
-# axs = air_quality.plot.area(figsize=(12, 4), subplots=True)
-# fig, axs = plt.subplots(figsize=(12, 4))
-# air_quality.plot.area(ax=axs)
-# axs.set_ylabel("NO$_2$ concentration")
+axs = air_quality.plot.area(figsize=(12, 4), subplots=True)
+fig, axs = plt.subplots(figsize=(12, 4))
+air_quality.plot.area(ax=axs)
+axs.set_ylabel("NO$_2$ concentration")
 # fig.savefig("no2_concentrations.png")
 
 air_quality["london_mg_per_cubic"] = air_quality["station_london"] * 1.882

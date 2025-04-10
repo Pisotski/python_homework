@@ -69,5 +69,5 @@ titanic_grouped_sex_age = titanic[["Sex", "Age"]].groupby("Sex").mean()
 titanic.groupby("Sex").mean(numeric_only=True)
 titanic_grouped_sex_age_i = titanic.groupby("Sex")["Age"].mean()
 
-print(titanic_grouped_sex_age)
-print(titanic_grouped_sex_age_i)
+# print(titanic_grouped_sex_age)
+# print(titanic_grouped_sex_age_i)
