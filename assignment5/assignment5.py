@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 data = [
     {"Employee": "Jones", "Product": "Widget", "Region": "West", "Revenue": 9000},
@@ -125,4 +126,144 @@ per_employee_sales["Commission"] = per_employee_sales.apply(
     calculate_commission, axis=1
 )
 
-print(per_employee_sales)
+data1 = {
+    "Name": ["Alice", "Bob", None, "David"],
+    "Age": [24, 27, 22, None],
+    "Score": [85, None, 88, 76],
+}
+df1 = pd.DataFrame(data1)
+
+df_missing = df1[df1.isnull().any(axis=1)]
+#     Name   Age  Score
+# 1    Bob  27.0    NaN
+# 2   None  22.0   88.0
+# 3  David   NaN   76.0
+
+df_dropped = df1.dropna()
+#     Name   Age  Score
+# 0  Alice  24.0   85.0
+
+df_filled = df1.fillna({"Age": 0, "Score": df1["Score"].mean()})
+#     Name   Age  Score
+# 0  Alice  24.0   85.0
+# 1    Bob  27.0   83.0
+# 2   None  22.0   88.0
+# 3  David   0.0   76.0
+
+data2 = {
+    "Name": ["Alice", "Bob", "Charlie"],
+    "Age": ["24", "27", "22"],
+    "JoinDate": ["2023-01-15", "2022-12-20", "2023-03-01"],
+}
+df2 = pd.DataFrame(data2)
+
+df2["Age"] = df2["Age"].astype(int)
+df2["JoinDate"] = pd.to_datetime(df2["JoinDate"])
+
+# Name                object
+# Age                  int64
+# JoinDate    datetime64[ns]
+# dtype: object
+
+#       Name  Age   JoinDate
+# 0    Alice   24 2023-01-15
+# 1      Bob   27 2022-12-20
+# 2  Charlie   22 2023-03-01
+
+data3 = {
+    "Name": ["Alice", "Bob", "Charlie"],
+    "Location": ["LA", "LA", "NY"],
+    "JoinDate": ["2023-01-15", "2022-12-20", "2023-03-01"],
+}
+df3 = pd.DataFrame(data3)
+
+# !CAVEAT if value is not either 'LA' or 'NY', map will convert to NaN.
+# df3['Location'] = df3['Location'].map({'LA': 'Los Angeles', 'NY': 'New York'})
+#       Name     Location    JoinDate
+# 0    Alice  Los Angeles  2023-01-15
+# 1      Bob  Los Angeles  2022-12-20
+# 2  Charlie     New York  2023-03-01
+
+df3["Location"] = df3["Location"].replace({"LA": "Los Angeles", "NY": "New York"})
+#       Name     Location    JoinDate
+# 0    Alice  Los Angeles  2023-01-15
+# 1      Bob  Los Angeles  2022-12-20
+# 2  Charlie     New York  2023-03-01
+
+data4 = {
+    "Name": ["Tom", "Dick", "Harry", "Mary"],
+    "Phone": [3212347890, "(212)555-8888", "752-9103", "8659134568"],
+}
+df4 = pd.DataFrame(data4)
+
+df4["Correct Phone"] = df4["Phone"].astype(str)
+
+
+def fix_phone(phone):
+    if phone.isnumeric():
+        out_string = phone
+    else:
+        out_string = ""
+        for c in phone:
+            if c in "0123456789":
+                out_string += c
+    if len(out_string) == 10:
+        return out_string
+    return None
+
+
+df4["Correct Phone"] = df4["Correct Phone"].map(fix_phone)
+#     Name          Phone Correct Phone
+# 0    Tom     3212347890    3212347890
+# 1   Dick  (212)555-8888    2125558888
+# 2  Harry       752-9103          None
+# 3   Mary     8659134568    8659134568
+
+data5 = {"Name": ["Alice", "Bob", "Charlie"], "Age": [20, 22, 43]}
+
+df5 = pd.DataFrame(data5)
+
+# Increase the age by 1 as a new year has passed
+df5["Age"] = df5["Age"] + 1
+# df5["Age"] = np.add(df5["Age"], 1)
+#       Name  Age
+# 0    Alice   21
+# 1      Bob   23
+# 2  Charlie   44
+
+data6 = {
+    "Name": ["Alice", "Bob", "Charlie"],
+    "Location": ["LA", "LA", "NY"],
+    "Grade": [78, 40, 85],
+}
+df6 = pd.DataFrame(data6)
+
+df6["Grade"] = pd.cut(df6["Grade"], 3, labels=["bad", "okay", "great"])
+#       Name Location  Grade
+# 0    Alice       LA  great
+# 1      Bob       LA    bad
+# 2  Charlie       NY  great
+
+data7 = {
+    "Name": ["Alice", "Bob", "Alice", "David"],
+    "Age": [24, 27, 24, 32],
+    "Score": [85, 92, 85, 76],
+}
+df7 = pd.DataFrame(data7)
+df_cleaned = df7.drop_duplicates()
+#     Name  Age  Score
+# 0  Alice   24     85
+# 1    Bob   27     92
+# 3  David   32     76
+
+df_cleaned_by_name = df7.drop_duplicates(subset="Name")
+#     Name  Age  Score
+# 0  Alice   24     85
+# 1    Bob   27     92
+# 3  David   32     76
+
+# # Replace outliers in 'Age' (e.g., Age > 100 or Age < 0)
+# df['Age'] = df['Age'].apply(lambda x: df['Age'].median() if x > 100 or x < 0 else x)
+
+# print("DataFrame after handling outliers:")
+# print(df)
