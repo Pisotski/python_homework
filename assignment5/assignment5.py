@@ -125,6 +125,11 @@ def calculate_commission(row):
 per_employee_sales["Commission"] = per_employee_sales.apply(
     calculate_commission, axis=1
 )
+#           Revenue Commission Plan  Commission
+# Employee
+# Garcia     226980               A    11849.00
+# Jones       35845               A     2292.25
+# Smith      183524               B     8340.96
 
 data1 = {
     "Name": ["Alice", "Bob", None, "David"],
