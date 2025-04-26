@@ -6,3 +6,6 @@ __pycache__/
 .vscode
 CACHEDIR.TAG
 .venv/
+air_quality.csv
+titanic.csv
+titanic.xlsx
