@@ -1,0 +1,4 @@
+hi,
+
+i think this command would be beneficial to know
+    print(ul.get_attribute("outerHTML"))

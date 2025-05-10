@@ -1,0 +1,17 @@
+Restricted sections of the Wikipedia website:
+- /w/index.php?title=Special:UserLogin
+- /w/index.php?title=Special:Search
+- /w/load.php
+- /api/rest_v1/
+- /wiki/Special:
+
+Rules for specific user agents:
+- UbiCrawler: completely disallowed from crawling
+- Googlebot: disallowed from crawling /api/rest_v1/
+
+Websites use robots.txt to inform web crawlers which parts of their 
+site should not be accessed or indexed. 
+This helps protect sensitive or private content, reduce server load, 
+and maintain site performance. Following robots.txt is essential 
+for ethical scraping, as it respects the website owner's 
+preferences and ensures responsible web interaction.
