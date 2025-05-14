@@ -272,6 +272,7 @@ def high_performing_agents(cursor):
     rows = cursor.fetchall()
     df = pd.DataFrame(rows)
     print(df)
+
     return rows
 
 
